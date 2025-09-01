@@ -66,11 +66,18 @@ void* callocBump(size_t size){
 	return user_ptr;
 }  
 void* reallocBump(void* user_ptr, size_t newsize){	// NOTE: Finish realloc and other edge cases!!
-	//void* meta = (char *)user_ptr - sizeof(Metadata);
-	//Metadata* chunk_info = (Metadata *) meta; 
-	//size_t toalloc = chunk_info->size - newsize;	
-	//void* this_alloc_end = bump_current + toalloc;
-	//return user_ptr; 
+    if(bump_end-bump_current > newsize){ // If there's enough free bytes in the memory to fit the resize
+            bump_current = bump_current + newsize;
+            bump_end = bump_current; // Push the end pointer forward by (newsize) bytes 
+            return user_ptr; 
+    } 
+    if(bump_end-bump_current < newsize){ // If there is not enough space to fit the resize
+            void* newchunk_start = (void *)sbrk(newsize); // sbrk() (newsize) bytes 
+            void* newchunk_end = newchunk_start + newsize; // Get pointer to the new end 
+            bump_end = newchunk_end; // Set global bump_end to the new total size 
+            return user_ptr; 
+
+    } 
 	return (void *)-1; 
 } 
 size_t freeBytes(void){
