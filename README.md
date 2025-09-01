@@ -28,3 +28,5 @@ NOTE: reallocBump() has been added. Only use at the end of the bump, attempting 
         freeBump(values2);
         freeBump(values1); 
     } 
+## Behavior 
+A bump allocator will not let you realloc() or free() from the middle. Following LIFO, in the code example above, you will have to free() "values2" before freeing "values1" as "values2" is at the end of the memory pool. Though it might be impractical in some use cases, in others it proves as a fast alternative for malloc(). I look to make more advanced allocators in the future, and any feedback anyone could give is accepted and valued. 
