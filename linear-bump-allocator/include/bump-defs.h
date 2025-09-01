@@ -12,6 +12,7 @@ static void* bump_end = NULL;
 void* allocBump(size_t size); 
 void initBump(void); 
 void freeBump(void* user_ptr); 
+void* reallocBump(void* user_ptr, size_t newsize);
 void expandBump(size_t newsize);
 void resetBump(void); 
 void* callocBump(size_t size);
