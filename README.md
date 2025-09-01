@@ -1,5 +1,6 @@
 # Linear-Bump-Allocator
 Bump allocator written in C including alloc(), calloc(), and free() in bump allocator version. Lightweight and great on performance. In the process of adding realloc() and more error handling. 
+NOTE: reallocBump() has been added. Only use at the end of the bump, attempting to reallocate middle memory blocks will result in unwanted behavior. 
 ## Usage
     #include "bump-defs.h" 
     #include <stdio.h> 
