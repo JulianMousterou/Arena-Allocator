@@ -14,8 +14,8 @@ void initBump(void){
 } 
 void* allocBump(size_t size){
         initBump(); 
-        if(size>1073741824){
-                perror("too large");
+        if(size>1073741824 || size == 0){
+                perror("INVALID SIZE INPUT");
                 return (void*)-1;
         }
         size_t total_chunk_size = sizeof(Metadata) + size;      // Leave room for Metadata 
