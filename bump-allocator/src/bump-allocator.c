@@ -14,8 +14,8 @@ void initBump(void){
 } 
 void* allocBump(size_t size){
         initBump(); 
-        if(size>1073741824 || size == 0){
-                perror("INVALID SIZE INPUT");
+        if(size>1073741824){
+                perror("too large");
                 return (void*)-1;
         }
         size_t total_chunk_size = sizeof(Metadata) + size;      // Leave room for Metadata 
@@ -55,6 +55,11 @@ int is_valid_ptr(void* user_ptr) {
     return 1;
 }
 void freeBump(void* user_ptr){
+        if(user_ptr == (char*)bump_start+sizeof(Metadata)){
+                void* meta = (char*)user_ptr - sizeof(Metadata);
+                Metadata* chunk_info = (Metadata*)meta;
+                bump_start = (char*)bump_start + chunk_info->size;
+        } 
         if(is_valid_ptr(user_ptr) != 1) return;
         if(bump_start == NULL){
                 perror("MEMORY POOL LEFT UNINITIALIZED, NEVER ALLOCATED?");
@@ -90,7 +95,7 @@ void* reallocBump(void* user_ptr, size_t newsize){// NOTE: CAN ONLY REALLOC AT T
         void* meta = user_ptr - sizeof(Metadata);
         Metadata* chunk_info = (Metadata *)meta; 
         if((char*)meta + chunk_info->size != bump_current){
-                perror("CAN ONLY REALLOC MOST RECENT ALLOC");
+                perror("CAN ONLY REALLOC MOST RECENT OR OLDEST ALLOC");
                 return (void*)-1;
         } 
         if(bump_end-bump_current > newsize){ // If there's enough free bytes in the memory to fit the resize
