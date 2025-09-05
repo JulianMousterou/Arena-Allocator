@@ -1,6 +1,7 @@
 # Bump-Allocator
 Bump allocator written in C including alloc(), calloc(), and free() in bump allocator version. Lightweight and great on performance. In the process of adding realloc() and more error handling. 
-NOTE: reallocBump() has been added. Only use at the end of the bump, attempting to reallocate middle memory blocks will result in unwanted behavior. 
+NOTE 1: reallocBump() has been added. Only use at the end of the bump, attempting to reallocate middle memory blocks will result in unwanted behavior. 
+NOTE 2: Made the allocator double-ended, you can now safely free from the head and tail of the memory block.
 ## Usage
     #include "bump-defs.h" 
     #include <stdio.h> 
@@ -29,4 +30,4 @@ NOTE: reallocBump() has been added. Only use at the end of the bump, attempting 
         freeBump(values1); 
     } 
 ## Behavior 
-A bump allocator will not let you realloc() or free() from the middle. Following LIFO, in the code example above, you will have to free() "values2" before freeing "values1" as "values2" is at the end of the memory pool. Though it might be impractical in some use cases, in others it proves as a fast alternative for malloc(). I look to make more advanced allocators in the future, and any feedback anyone could give is accepted and valued. 
+A bump allocator will not let you realloc() or free() from the middle, this one is now double-ended so you can free from the head and tail. Following LIFO, in the code example above, you will have to free() "values2" before freeing "values1" as "values2" is at the end of the memory pool. Though it might be impractical in some use cases, in others it proves as a fast alternative for malloc(). In the case of lets say three "bumpAlloc()" calls, you can free the third and first allocation. I look to make more advanced allocators in the future, and any feedback anyone could give is accepted and valued. 
