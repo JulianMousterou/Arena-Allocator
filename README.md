@@ -1,4 +1,4 @@
-# Bump-Allocator
+# Double-Ended-Bump-Allocator
 Bump allocator written in C including alloc(), calloc(), and free() in bump allocator version. Lightweight and great on performance. In the process of adding realloc() and more error handling. 
 NOTE 1: reallocBump() has been added. Only use at the end of the bump, attempting to reallocate middle memory blocks will result in unwanted behavior. 
 NOTE 2: Made the allocator double-ended, you can now safely free from the head and tail of the memory block.
